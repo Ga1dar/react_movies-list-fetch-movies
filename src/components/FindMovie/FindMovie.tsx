@@ -23,7 +23,7 @@ const normalizeToMovie = (data: MovieData): Movie => ({
   title: data.Title,
   description: data.Plot,
   imgUrl: data.Poster && data.Poster !== 'N/A' ? data.Poster : DEFAULT_POSTER,
-  imdbUrl: `https://www.imdb.com/title/${data.imdbID}/`,
+  imdbUrl: `https://www.imdb.com/title/${data.imdbID}`,
 });
 
 export const FindMovie: React.FC<Props> = ({ onAdd }) => {
@@ -97,12 +97,14 @@ export const FindMovie: React.FC<Props> = ({ onAdd }) => {
             />
           </div>
 
-          <p
-            className={`help is-danger ${error ? '' : 'is-hidden'}`}
-            data-cy="errorMessage"
-          >
-            Can&apos;t find a movie with such a title
-          </p>
+          {error && (
+            <p
+              className={`help is-danger ${error ? '' : 'is-hidden'}`}
+              data-cy="errorMessage"
+            >
+              Can&apos;t find a movie with such a title
+            </p>
+          )}
         </div>
 
         <div className="field is-grouped">
@@ -117,23 +119,27 @@ export const FindMovie: React.FC<Props> = ({ onAdd }) => {
             </button>
           </div>
 
-          <div className="control">
-            <button
-              data-cy="addButton"
-              type="button"
-              className={`button is-primary ${preview ? '' : 'is-hidden'}`}
-              onClick={handleAdd}
-            >
-              Add to the list
-            </button>
-          </div>
+          {preview && (
+            <div className="control">
+              <button
+                data-cy="addButton"
+                type="button"
+                className="button is-primary"
+                onClick={handleAdd}
+              >
+                Add to the list
+              </button>
+            </div>
+          )}
         </div>
       </form>
 
-      <div className="container" data-cy="previewContainer">
-        <h2 className="title">Preview</h2>
-        {preview && <MovieCard movie={preview} />}
-      </div>
+      {preview && (
+        <div className="container" data-cy="previewContainer">
+          <h2 className="title">Preview</h2>
+          {preview && <MovieCard movie={preview} />}
+        </div>
+      )}
     </>
   );
 };
